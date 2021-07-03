@@ -212,6 +212,6 @@ cython_debug/
 
 secret_key.txt
 .idea/
-
+cafes.db
 
 # End of https://www.toptal.com/developers/gitignore/api/flask,python

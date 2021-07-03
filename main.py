@@ -33,22 +33,27 @@ class Cafe(db.Model):
             # and the value is the value of the column
             dictionary[column.name] = getattr(self, column.name)
         return dictionary
-
         # Method 2. Altenatively use Dictionary Comprehension to do the same thing.
         # return {column.name: getattr(self, column.name) for column in self.__table__.columns}
-
 
 @app.route("/")
 def home():
     return render_template("index.html")
 
+## HTTP GET - Read Record
 @app.route("/random")
 def get_random_cafe():
-    cafes = db.session.query(Cafe).all()
-    random_cafe = random.choice(cafes)
-    # print(random_cafe.name)
+    cafes_data = db.session.query(Cafe.to_dict).all()
+    random_cafe = random.choice(cafes_data)
+    return jsonify(random_cafe)
+'''
+# Above is simpler way to use jsonify() compared to below lenghty code
+# <Serialising DB row Object to JSON>
+# by first converting to dictionary and using jsonify() to convert the dictionary to a JSON.
+# Cafe class includes 'to_dict' function.
 
-    return jsonify(cafe={
+    return jsonify(
+        cafe={
         "name" : random_cafe.name,
         "map_url" : random_cafe.map_url,
         "img_url" : random_cafe.img_url,
@@ -60,9 +65,8 @@ def get_random_cafe():
         "can_take_calls" : random_cafe.can_take_calls,
         "coffee_price" : random_cafe.coffee_price
     })
-
-
-
+'''
+## HTTP GET - Read Record
 @app.route("/all")
 def get_all_cafes():
     cafes = db.session.query(Cafe).all()
@@ -100,7 +104,7 @@ def post_new_cafe():
 
 
 
-## HTTP GET - Read Record
+
 
 ## HTTP POST - Create Record
 
