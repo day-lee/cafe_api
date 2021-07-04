@@ -115,4 +115,4 @@ def post_new_cafe():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
+    app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
