@@ -43,9 +43,9 @@ def home():
 ## HTTP GET - Read Record
 @app.route("/random")
 def get_random_cafe():
-    cafes_data = db.session.query(Cafe.to_dict).all()
+    cafes_data = db.session.query(Cafe).all()
     random_cafe = random.choice(cafes_data)
-    return jsonify(random_cafe)
+    return jsonify(cafes=random_cafe.to_dict())
 '''
 # Above is simpler way to use jsonify() compared to below lenghty code
 # <Serialising DB row Object to JSON>
