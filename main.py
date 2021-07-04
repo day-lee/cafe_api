@@ -73,10 +73,9 @@ def get_all_cafes():
     #This uses a List Comprehension but you could also split it into 3 lines.
     return jsonify(cafes=[cafe.to_dict() for cafe in cafes])
 
-
 @app.route("/search")
 def get_cafe_at_location():
-    query_location = request.args.get("loc") #url parameter    e.g. /edit?id=3
+    query_location = request.args.get("loc") #url parameter e.g./search?loc=Peckham
     cafe = db.session.query(Cafe).filter_by(location=query_location).first()
     if cafe:
         return jsonify(cafe=cafe.to_dict())
