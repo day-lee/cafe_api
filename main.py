@@ -47,6 +47,8 @@ def get_random_cafe():
     random_cafe = random.choice(cafes_data)
     return jsonify(cafes=random_cafe.to_dict())
 '''
+
+
 # Above is simpler way to use jsonify() compared to below lenghty code
 # <Serialising DB row Object to JSON>
 # by first converting to dictionary and using jsonify() to convert the dictionary to a JSON.
@@ -82,7 +84,7 @@ def get_cafe_at_location():
     else:
         return jsonify(error={"Not Found": "Sorry, we don't have a cafe at that location."})
 
-
+## HTTP POST - Create Record
 @app.route("/add", methods=["POST"])
 def post_new_cafe():
     new_cafe = Cafe(
@@ -101,15 +103,20 @@ def post_new_cafe():
     db.session.commit()
     return jsonify(response={"success": "Successfully added the new cafe."})
 
-
-
-
-
-## HTTP POST - Create Record
-
 ## HTTP PUT/PATCH - Update Record
+@app.route("/update-price/<id>", methods=["PATCH"])
+def change_new_price(id):
+    new_price = request.args.get("new_price") #e.g. /update-price/1?new_price=£1.11
+    cafe = db.session.query(Cafe).get(id)
+    if cafe:
+        cafe.coffee_price = new_price
+        db.session.commit()
+        return jsonify(response={"success": "Successfully updated the price."})
+    else:
+        return jsonify(error={"Not Found": "Sorry, a cafe with that id was not found in the database."})
 
 ## HTTP DELETE - Delete Record
+
 
 
 if __name__ == '__main__':
